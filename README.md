@@ -1,54 +1,101 @@
-# query-play-studio
-Query Play Studio
+# Query Play Studio. In progress now!
 
-# Symfony Docker
+## About 'Query Play Studio'
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
+This is a query play studio, written in and for educational and demonstrational purposes.
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
+Based on tech stack:
+- [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML),
+- [PHP](https://www.php.net),
+- [Symfony](https://symfony.com),
+- [MySQL](https://www.mysql.com),
+- [TypeScript](https://www.typescriptlang.org),
+- [Vue](https://vuejs.org),
+- [Vue Router](https://router.vuejs.org/),
+- [Pinia](https://pinia.vuejs.org),
+- [Axios](https://axios-http.com),
+- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS),
+- [TailwindCss](https://tailwindcss.com),
+- [Docker](https://www.docker.com),
+- [Swagger](https://swagger.io),
+- [Postman](https://www.postman.com).
 
 ## Getting Started
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --pull --no-cache` to build fresh images
-3. Run `docker compose up --wait` to set up and start a fresh Symfony project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+- Clone the repository:
+``` bash
+git clone [repository-url]
+```
 
-## Features
+- Change directory to project:
+``` bash
+cd /path/to/query-play-studio/
+```
 
-- Production, development and CI ready
-- Just 1 service by default
-- Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-- [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-- Automatic HTTPS (in dev and prod)
-- HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-- Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-- [Vulcain](https://vulcain.rocks) support
-- Native [XDebug](docs/xdebug.md) integration
-- Super-readable configuration
+- Add file .env.local with your parameters:
+``` bash
+MYSQL_ROOT_PASSWORD=
+MYSQL_DATABASE=
+MYSQL_USER=
+MYSQL_PASSWORD=
+DATABASE_URL=
+```
 
-**Enjoy!**
+- Run Docker Desktop (with wsl - for Windows only)
 
-## Docs
+- Run wsl (for Windows only):
+``` bash
+wsl
+```
 
-1. [Options available](docs/options.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using MySQL instead of PostgreSQL](docs/mysql.md)
-8. [Using Alpine Linux instead of Debian](docs/alpine.md)
-9. [Using a Makefile](docs/makefile.md)
-10. [Updating the template](docs/updating.md)
-11. [Troubleshooting](docs/troubleshooting.md)
+- Build docker compose:
+``` bash
+docker compose build
+```
+
+- Up docker compose:
+``` bash
+docker compose up -d
+```
+
+- Generate application key:
+``` bash
+docker compose exec php bin/console secrets:generate-keys
+docker compose exec php bin/console secrets:set APP_SECRET
+```
+
+or
+
+``` bash
+docker compose exec php php -r "echo 'APP_SECRET=' . bin2hex(random_bytes(32)) . PHP_EOL;"
+```
+
+- Add new tab in terminal and connect to container:
+``` bash
+docker exec -it query-play-studio-php-1 bash
+```
+
+- Install php dependencies:
+``` bash
+composer install
+```
+
+- Install node dependencies:
+``` bash
+npm install
+```
+
+- Build project:
+``` bash
+npm run build
+```
+
+- In browser go to http://localhost/
+
+That's it! Thank you!
+
+## Screenshots
 
 ## License
 
-Symfony Docker is available under the MIT License.
-
-## Credits
-
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+The 'Query Play Studio' is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
