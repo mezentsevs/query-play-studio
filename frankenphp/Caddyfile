@@ -1,6 +1,9 @@
 {
 	skip_install_trust
 
+	auto_https disable_redirects
+	http_port 80
+
 	{$CADDY_GLOBAL_OPTIONS}
 
 	frankenphp {
@@ -16,7 +19,7 @@
 
 {$CADDY_EXTRA_CONFIG}
 
-{$SERVER_NAME:localhost} {
+http://{$SERVER_NAME:localhost} {
 	log {
 		{$CADDY_SERVER_LOG_OPTIONS}
 		# Redact the authorization query parameter that can be set by Mercure
@@ -49,6 +52,11 @@
 
 	# Disable Topics tracking if not enabled explicitly: https://github.com/jkarlin/topics
 	header ?Permissions-Policy "browsing-topics=()"
+
+	@phpFiles {
+    	path *.php
+	}
+	php @phpFiles
 
 	@phpRoute {
 		not path /.well-known/mercure*
