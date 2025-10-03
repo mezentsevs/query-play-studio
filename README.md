@@ -1,6 +1,6 @@
-# Query Play Studio. In progress now!
+# Query play studio. In progress now!
 
-## About 'Query Play Studio'
+## About 'Query play studio'
 
 This is a query play studio, written in and for educational and demonstrational purposes.
 
@@ -98,4 +98,4 @@ That's it! Thank you!
 
 ## License
 
-The 'Query Play Studio' is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The 'Query play studio' is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
