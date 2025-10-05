@@ -48,14 +48,9 @@ DATABASE_URL=
 wsl
 ```
 
-- Build docker compose:
-``` bash
-docker compose build
-```
-
 - Up docker compose:
 ``` bash
-docker compose up -d
+docker-compose --env-file .env.local up -d
 ```
 
 - Generate application key:
