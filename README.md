@@ -32,14 +32,7 @@ git clone [repository-url]
 cd /path/to/query-play-studio/
 ```
 
-- Add file .env.local with your parameters:
-``` bash
-MYSQL_ROOT_PASSWORD=
-MYSQL_DATABASE=
-MYSQL_USER=
-MYSQL_PASSWORD=
-DATABASE_URL=
-```
+- Add file .env.local with your parameters
 
 - Change database name in docker\mysql-sandbox\init.sql accordingly your .env.local
 
