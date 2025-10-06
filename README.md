@@ -41,6 +41,8 @@ MYSQL_PASSWORD=
 DATABASE_URL=
 ```
 
+- Change database name in docker\mysql-sandbox\init.sql accordingly your .env.local
+
 - Run Docker Desktop (with wsl - for Windows only)
 
 - Run wsl (for Windows only):
