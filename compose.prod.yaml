@@ -1,5 +1,5 @@
 services:
-  php:
+  qps-php:
     build:
       context: .
       target: frankenphp_prod

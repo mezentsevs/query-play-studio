@@ -20,6 +20,7 @@ VOLUME /app/var/
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	file \
 	git \
+	libpq-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
@@ -29,6 +30,8 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
+		pdo_pgsql \
+		pgsql \
 	;
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser

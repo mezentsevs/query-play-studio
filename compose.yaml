@@ -1,43 +1,44 @@
 services:
-  php:
+  qps-php:
     image: ${IMAGES_PREFIX:-}app-php
+    container_name: qps-php
     restart: unless-stopped
     environment:
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
-      # Run "composer require symfony/orm-pack" to install and configure Doctrine ORM
-      # DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-15}&charset=${POSTGRES_CHARSET:-utf8}
-      DATABASE_URL: mysql://${MYSQL_USER:-user}:${MYSQL_PASSWORD:-password}@database:3306/${MYSQL_DATABASE:-your_mysql_database}?serverVersion=8.0&charset=utf8mb4
-      # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
-      MERCURE_URL: ${CADDY_MERCURE_URL:-http://php/.well-known/mercure}
+      DATABASE_URL: mysql://${MYSQL_USER:-user}:${MYSQL_PASSWORD:-password}@qps-db:3306/${MYSQL_DATABASE:-app_db}?serverVersion=8.4&charset=utf8mb4
+      MYSQL_SANDBOX_URL: mysql://${MYSQL_SANDBOX_ROOT_USER:-root}:${MYSQL_SANDBOX_ROOT_PASSWORD}@qps-mysql-sandbox:3306
+      POSTGRES_SANDBOX_URL: postgresql://${POSTGRES_SANDBOX_ROOT_USER:-postgres}:${POSTGRES_SANDBOX_ROOT_PASSWORD}@qps-postgres-sandbox:5432/postgres
+      SQLITE_SANDBOX_PATH: /var/lib/sqlite
+      MERCURE_URL: ${CADDY_MERCURE_URL:-http://qps-php/.well-known/mercure}
       MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-http://${SERVER_NAME:-localhost}:${HTTP_PORT:-80}/.well-known/mercure}
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
-      # The two next lines can be removed after initial installation
       SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
+      - qps-caddy-data:/data
+      - qps-caddy-config:/config
+      - qps-sqlite-sandbox-data:/var/lib/sqlite:rw
     ports:
       - target: 80
         published: ${HTTP_PORT:-80}
         protocol: tcp
     depends_on:
-      - database
+      - qps-db
+      - qps-mysql-sandbox
+      - qps-postgres-sandbox
 
-  database:
-    image: mysql:8.0
-    container_name: query-play-studio-db
+  qps-db:
+    image: mysql:8.4
+    container_name: qps-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql:rw
+      - qps-db-data:/var/lib/mysql:rw
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
@@ -45,9 +46,43 @@ services:
       retries: 3
       start_period: 30s
 
+  qps-mysql-sandbox:
+    image: mysql:8.4
+    container_name: qps-mysql-sandbox
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_SANDBOX_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_SANDBOX_DATABASE}
+      MYSQL_TCP_PORT: 3307
+    volumes:
+      - qps-mysql-sandbox-data:/var/lib/mysql:rw
+      - ./docker/mysql-sandbox/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_SANDBOX_ROOT_PASSWORD}"]
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  qps-postgres-sandbox:
+    image: postgres:18
+    container_name: qps-postgres-sandbox
+    environment:
+      POSTGRES_DB: ${POSTGRES_SANDBOX_DATABASE}
+      POSTGRES_USER: ${POSTGRES_SANDBOX_ROOT_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_SANDBOX_ROOT_PASSWORD}
+    volumes:
+      - qps-postgres-sandbox-data:/var/lib/postgresql/data:rw
+      - ./docker/postgres-sandbox/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_SANDBOX_ROOT_USER} -d ${POSTGRES_SANDBOX_DATABASE}"]
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 volumes:
-  caddy_data:
-  caddy_config:
-  db_data:
-  database_data:
+  qps-caddy-data:
+  qps-caddy-config:
+  qps-db-data:
+  qps-mysql-sandbox-data:
+  qps-postgres-sandbox-data:
+  qps-sqlite-sandbox-data:
   
