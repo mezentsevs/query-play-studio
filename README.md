@@ -34,8 +34,6 @@ cd /path/to/query-play-studio/
 
 - Add file .env.local with your parameters
 
-- Change database name in docker\mysql-sandbox\init.sql accordingly your .env.local
-
 - Run Docker Desktop (with wsl - for Windows only)
 
 - Run wsl (for Windows only):
