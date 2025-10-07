@@ -47,7 +47,11 @@ services:
       start_period: 30s
 
   qps-mysql-sandbox:
-    image: mysql:8.4
+    build:
+      context: .
+      dockerfile: docker/mysql-sandbox/Dockerfile
+      args:
+        MYSQL_SANDBOX_DATABASE: ${MYSQL_SANDBOX_DATABASE}
     container_name: qps-mysql-sandbox
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_SANDBOX_ROOT_PASSWORD}
@@ -55,7 +59,6 @@ services:
       MYSQL_TCP_PORT: 3307
     volumes:
       - qps-mysql-sandbox-data:/var/lib/mysql:rw
-      - ./docker/mysql-sandbox/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_SANDBOX_ROOT_PASSWORD}"]
       timeout: 10s
