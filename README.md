@@ -46,6 +46,19 @@ wsl
 docker-compose --env-file .env.local up -d
 ```
 
+or
+
+``` bash
+./docker/run.sh
+```
+
+- Also available other scripts:
+``` bash
+./docker/build.sh
+./docker/stop.sh
+./docker/kill.sh
+```
+
 - Generate application key:
 ``` bash
 docker compose exec php bin/console secrets:generate-keys
@@ -60,7 +73,7 @@ docker compose exec php php -r "echo 'APP_SECRET=' . bin2hex(random_bytes(32)) .
 
 - Add new tab in terminal and connect to container:
 ``` bash
-docker exec -it query-play-studio-php-1 bash
+docker exec -it qps-php bash
 ```
 
 - Install php dependencies:
