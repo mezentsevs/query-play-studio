@@ -4,6 +4,8 @@
 
 This is a query play studio, written in and for educational and demonstrational purposes.
 
+A full-stack SPA platform for mastering database query writing across various database systems. Provides secure sandbox environments with different databases for hands-on experimentation. Supports both free exploration and structured exercise modes. Features an AI mentor using cloud or local models for intelligent query analysis, performance optimization, and guidance on advanced query language constructs.
+
 Based on tech stack:
 - [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML),
 - [PHP](https://www.php.net),
