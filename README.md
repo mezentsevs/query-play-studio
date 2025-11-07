@@ -1,4 +1,4 @@
-# Query play studio. In progress now!
+# Query play studio. In progress now! 🏗️
 
 ## About 'Query play studio'
 
