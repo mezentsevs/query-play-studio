@@ -14,21 +14,21 @@
         "php": ">=8.4.13",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "api-platform/doctrine-orm": "^4.2",
-        "api-platform/symfony": "^4.2",
-        "doctrine/dbal": "^3",
-        "doctrine/doctrine-bundle": "^2.16",
-        "doctrine/doctrine-migrations-bundle": "^3.4",
-        "doctrine/orm": "^3.5",
-        "nelmio/cors-bundle": "^2.5",
-        "phpdocumentor/reflection-docblock": "^5.6",
+        "api-platform/doctrine-orm": "^4.2.9",
+        "api-platform/symfony": "^4.2.9",
+        "doctrine/dbal": "^3.10.4",
+        "doctrine/doctrine-bundle": "^2.18.1",
+        "doctrine/doctrine-migrations-bundle": "^3.7",
+        "doctrine/orm": "^3.5.8",
+        "nelmio/cors-bundle": "^2.6",
+        "phpdocumentor/reflection-docblock": "^5.6.5",
         "phpstan/phpdoc-parser": "^2.3",
         "runtime/frankenphp-symfony": "^0.2.0",
         "symfony/asset": "7.3.*",
         "symfony/console": "7.3.*",
         "symfony/dotenv": "7.3.*",
         "symfony/expression-language": "7.3.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.10",
         "symfony/framework-bundle": "7.3.*",
         "symfony/property-access": "7.3.*",
         "symfony/property-info": "7.3.*",
@@ -40,8 +40,8 @@
         "symfony/yaml": "7.3.*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.88",
-        "symfony/maker-bundle": "^1.64"
+        "friendsofphp/php-cs-fixer": "^3.91.3",
+        "symfony/maker-bundle": "^1.65.1"
     },
     "autoload": {
         "psr-4": {
