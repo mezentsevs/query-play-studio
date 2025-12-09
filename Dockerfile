@@ -34,6 +34,16 @@ RUN set -eux; \
 		pgsql \
 	;
 
+# Install packages for frontend build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && npm install -g npm@latest \
+	&& apt-get purge -y --auto-remove gnupg \
+	&& apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
 

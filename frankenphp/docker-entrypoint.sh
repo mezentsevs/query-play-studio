@@ -35,6 +35,15 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		echo "JWT keys generated."
 	fi
 
+	# Install frontend dependencies if frontend directory exists
+	if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
+		echo "Installing frontend dependencies..."
+		cd frontend
+		npm install --no-progress --no-audit
+		cd ..
+		echo "Frontend dependencies installed."
+	fi
+
 	# Display information about the current project
 	# Or about an error in project initialization
 	php bin/console -V
