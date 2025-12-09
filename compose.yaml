@@ -14,6 +14,7 @@ services:
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://qps-php/.well-known/mercure}
       MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-http://${SERVER_NAME:-localhost}:${HTTP_PORT:-80}/.well-known/mercure}
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      MERCURE_TRANSPORT_URL: bolt:///data/mercure.db
       SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}
     volumes:
@@ -73,7 +74,7 @@ services:
       POSTGRES_USER: ${POSTGRES_SANDBOX_ROOT_USER}
       POSTGRES_PASSWORD: ${POSTGRES_SANDBOX_ROOT_PASSWORD}
     volumes:
-      - qps-postgres-sandbox-data:/var/lib/postgresql/data:rw
+      - qps-postgres-sandbox-data:/var/lib/postgresql:rw
       - ./docker/postgres-sandbox/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_SANDBOX_ROOT_USER} -d ${POSTGRES_SANDBOX_DATABASE}"]

@@ -26,6 +26,15 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		composer install --prefer-dist --no-progress --no-interaction
 	fi
 
+	# Generate JWT keys if they do not exist
+	if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+		echo "Generating JWT keys..."
+		mkdir -p config/jwt
+		openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:${JWT_PASSPHRASE}
+		openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:${JWT_PASSPHRASE}
+		echo "JWT keys generated."
+	fi
+
 	# Display information about the current project
 	# Or about an error in project initialization
 	php bin/console -V
