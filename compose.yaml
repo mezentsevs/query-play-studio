@@ -16,6 +16,9 @@ services:
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-/app/config/jwt/private.pem}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-/app/config/jwt/public.pem}
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE:-!ChangeThisJWTPassphrase!}
     volumes:
       - qps-caddy-data:/data
       - qps-caddy-config:/config

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Query Play Studio{% endblock %}
+
+{% block body %}
+    <div id="app"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('build/app.js') }}"></script>
+{% endblock %}
