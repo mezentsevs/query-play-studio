@@ -44,10 +44,6 @@ http://{$SERVER_NAME:localhost} {
 		subscriptions
 		# Extra directives
 		{$MERCURE_EXTRA_DIRECTIVES}
-		# Transport configuration
-		transport bolt {
-			path /data/mercure.db
-		}
 	}
 
 	vulcain
