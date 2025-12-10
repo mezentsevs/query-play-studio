@@ -8,6 +8,13 @@ framework:
     #esi: true
     #fragments: true
 
+    http_client:
+        default_options:
+            max_duration: 30
+            timeout: 30
+            verify_peer: false
+            verify_host: false
+
 when@test:
     framework:
         test: true

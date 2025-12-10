@@ -33,3 +33,32 @@ services:
         arguments:
             $params: '@parameter_bag'
             $queryExecutor: '@App\Service\SandboxQueryExecutor'
+
+    App\Service\SandboxLogService:
+        arguments:
+            $sandboxLogRepository: '@App\Repository\SandboxLogRepository'
+            $entityManager: '@doctrine.orm.entity_manager'
+
+    App\Service\ExerciseService:
+        arguments:
+            $exerciseRepository: '@App\Repository\ExerciseRepository'
+            $progressRepository: '@App\Repository\UserExerciseProgressRepository'
+            $entityManager: '@doctrine.orm.entity_manager'
+            $sandboxManager: '@App\Service\SandboxManager'
+
+    App\Service\AiAssistantService:
+        arguments:
+            $aiConversationRepository: '@App\Repository\AiConversationRepository'
+            $entityManager: '@doctrine.orm.entity_manager'
+            $httpClient: '@http_client'
+            $aiEnabled: '%env(AI_ENABLED)%'
+            $aiProvider: '%env(AI_PROVIDER)%'
+            $aiApiKey: '%env(AI_API_KEY)%'
+            $aiBaseUrl: '%env(AI_BASE_URL)%'
+            $aiModel: '%env(AI_MODEL)%'
+            $aiMaxTokens: '%env(int:AI_MAX_TOKENS)%'
+            $aiTemperature: '%env(float:AI_TEMPERATURE)%'
+
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        class: Symfony\Component\HttpClient\HttpClient
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
