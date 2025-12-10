@@ -10,7 +10,7 @@ class UserService
 {
     public function __construct(
         private UserRepository $userRepository,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

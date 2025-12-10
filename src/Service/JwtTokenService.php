@@ -8,7 +8,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 class JwtTokenService
 {
     public function __construct(
-        private JWTTokenManagerInterface $jwtManager
+        private JWTTokenManagerInterface $jwtManager,
     ) {
     }
 
@@ -25,11 +25,11 @@ class JwtTokenService
     public function getTokenExpiration(string $token): ?\DateTimeImmutable
     {
         $payload = $this->decodeToken($token);
-        
+
         if (isset($payload['exp'])) {
-            return (new \DateTimeImmutable())->setTimestamp($payload['exp']);
+            return new \DateTimeImmutable()->setTimestamp($payload['exp']);
         }
-        
+
         return null;
     }
 

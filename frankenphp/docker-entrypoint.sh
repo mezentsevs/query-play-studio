@@ -35,6 +35,15 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		echo "JWT keys generated."
 	fi
 
+	# Ensure SQLite sandbox directory exists and is writable
+	SQLITE_DIR="/var/lib/sqlite"
+	if [ ! -d "$SQLITE_DIR" ]; then
+		echo "Creating SQLite sandbox directory..."
+		mkdir -p "$SQLITE_DIR"
+	fi
+	chmod 777 "$SQLITE_DIR"
+	echo "SQLite sandbox directory ready at: $SQLITE_DIR"
+
 	# Install frontend dependencies if frontend directory exists
 	if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
 		echo "Installing frontend dependencies..."

@@ -20,7 +20,7 @@ class AuthController extends AbstractController
         private UserService $userService,
         private JWTTokenManagerInterface $jwtManager,
         private UserPasswordHasherInterface $passwordHasher,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
     ) {
     }
 
@@ -32,30 +32,30 @@ class AuthController extends AbstractController
         if (!isset($data['email'], $data['password'], $data['username'])) {
             return new JsonResponse([
                 'status' => 'error',
-                'message' => 'Missing required fields: email, password, username'
+                'message' => 'Missing required fields: email, password, username',
             ], Response::HTTP_BAD_REQUEST);
         }
 
         $user = new User();
         $user->setEmail($data['email']);
         $user->setUsername($data['username']);
-        
+
         $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
-        
+
         $errors = $this->validator->validate($user);
-        
+
         if (count($errors) > 0) {
             $errorMessages = [];
 
             foreach ($errors as $error) {
-                $errorMessages[] = $error->getPropertyPath() . ': ' . $error->getMessage();
+                $errorMessages[] = $error->getPropertyPath().': '.$error->getMessage();
             }
-            
+
             return new JsonResponse([
                 'status' => 'error',
                 'message' => 'Validation failed',
-                'errors' => $errorMessages
+                'errors' => $errorMessages,
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -70,8 +70,8 @@ class AuthController extends AbstractController
             'user' => [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
-                'username' => $user->getUsername()
-            ]
+                'username' => $user->getUsername(),
+            ],
         ], Response::HTTP_CREATED);
     }
 
@@ -79,11 +79,11 @@ class AuthController extends AbstractController
     public function login(): JsonResponse
     {
         $user = $this->getUser();
-        
+
         if (!$user instanceof User) {
             return new JsonResponse([
                 'status' => 'error',
-                'message' => 'Authentication failed'
+                'message' => 'Authentication failed',
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -96,8 +96,8 @@ class AuthController extends AbstractController
             'user' => [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
-                'username' => $user->getUsername()
-            ]
+                'username' => $user->getUsername(),
+            ],
         ]);
     }
 
@@ -105,11 +105,11 @@ class AuthController extends AbstractController
     public function me(): JsonResponse
     {
         $user = $this->getUser();
-        
+
         if (!$user instanceof User) {
             return new JsonResponse([
                 'status' => 'error',
-                'message' => 'Not authenticated'
+                'message' => 'Not authenticated',
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -119,8 +119,8 @@ class AuthController extends AbstractController
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
                 'username' => $user->getUsername(),
-                'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s')
-            ]
+                'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+            ],
         ]);
     }
 }
