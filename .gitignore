@@ -76,3 +76,9 @@
 
 # Database
 *.db
+
+# Frontend
+/public/build/
+
+# Docker
+/docker/logs/
