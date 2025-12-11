@@ -95,6 +95,37 @@ npm run build
 
 - In browser go to http://localhost/
 
+## Development and Production Modes
+
+### Development Mode (Hot Module Replacement)
+- Start the Vite dev server inside the Docker container: `npm run dev`
+- Note: The frontend is located in the `frontend` directory, so the command runs from `/app/frontend` in the container.
+- Vite will run on port 3000 and provide hot reloading for Vue components.
+- Symfony with Caddy runs on port 80 and serves the HTML page.
+- The Twig template will load scripts from `http://localhost:3000/` for HMR.
+- Open your browser at `http://localhost` to see the application.
+
+### Production Mode (Compiled Assets)
+- Build the frontend assets inside the Docker container: `npm run build`
+- Note: The frontend is located in the `frontend` directory, so the command runs from `/app/frontend` in the container.
+- This will compile and bundle all assets into the `public/build/` directory (in the project root, one level up from `frontend`).
+- The main files are `app.js` (JavaScript bundle), `app.css` (all CSS styles in one file), and chunk files in the `chunks/` folder.
+- Set the Symfony environment to production by setting `APP_ENV=prod` and `APP_DEBUG=0` in your `.env.local` file.
+- Clear the Symfony cache for the production environment: `php bin/console cache:clear --env=prod`
+- Restart the Docker container (or ensure Caddy is serving the updated `public/build/` directory) and open `http://localhost`.
+
+### Switching Between Modes
+- To switch from development to production: Stop the Vite dev server (Ctrl+C), run the build command, set `APP_ENV=prod`, and clear the cache.
+- To switch from production to development: Delete the `public/build/` folder, set `APP_ENV=dev`, and start the Vite dev server again.
+
+### Asset Locations
+- In development, all scripts and styles are served by the Vite dev server from `http://localhost:3000/`.
+- In production, all assets are static files in the `public/build/` directory (located at the project root) and served by Caddy.
+
+### Environment Variables
+- `APP_ENV` (in `.env.local`): Controls which scripts are included by Twig (`dev` for Vite HMR, `prod` for compiled assets).
+- `NODE_ENV`: Automatically set by Vite (`development` when running `npm run dev`, `production` when building).
+
 That's it! Thank you!
 
 ## Screenshots
