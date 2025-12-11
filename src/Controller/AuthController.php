@@ -66,11 +66,13 @@ class AuthController extends AbstractController
         return new JsonResponse([
             'status' => 'success',
             'message' => 'User registered successfully',
-            'token' => $token,
-            'user' => [
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'username' => $user->getUsername(),
+            'data' => [
+                'token' => $token,
+                'user' => [
+                    'id' => $user->getId(),
+                    'email' => $user->getEmail(),
+                    'username' => $user->getUsername(),
+                ],
             ],
         ], Response::HTTP_CREATED);
     }
@@ -78,27 +80,7 @@ class AuthController extends AbstractController
     #[Route('/login', name: 'api_auth_login', methods: ['POST'])]
     public function login(): JsonResponse
     {
-        $user = $this->getUser();
-
-        if (!$user instanceof User) {
-            return new JsonResponse([
-                'status' => 'error',
-                'message' => 'Authentication failed',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $token = $this->jwtManager->create($user);
-
-        return new JsonResponse([
-            'status' => 'success',
-            'message' => 'Login successful',
-            'token' => $token,
-            'user' => [
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'username' => $user->getUsername(),
-            ],
-        ]);
+        throw new \RuntimeException('This method should not be called. Login is handled by Symfony Security.');
     }
 
     #[Route('/me', name: 'api_auth_me', methods: ['GET'])]
@@ -115,11 +97,14 @@ class AuthController extends AbstractController
 
         return new JsonResponse([
             'status' => 'success',
-            'user' => [
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'username' => $user->getUsername(),
-                'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+            'message' => '',
+            'data' => [
+                'user' => [
+                    'id' => $user->getId(),
+                    'email' => $user->getEmail(),
+                    'username' => $user->getUsername(),
+                    'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+                ],
             ],
         ]);
     }
