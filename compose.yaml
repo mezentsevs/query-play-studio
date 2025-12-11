@@ -23,10 +23,12 @@ services:
       - qps-caddy-data:/data
       - qps-caddy-config:/config
       - qps-sqlite-sandbox-data:/var/lib/sqlite:rw
+      - ./docker/logs:/app/var/log
     ports:
       - target: 80
         published: ${HTTP_PORT:-80}
         protocol: tcp
+      - "3000:3000" # For Vite Dev Server
     depends_on:
       - qps-db
       - qps-mysql-sandbox

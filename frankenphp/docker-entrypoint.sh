@@ -44,6 +44,16 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 	chmod 777 "$SQLITE_DIR"
 	echo "SQLite sandbox directory ready at: $SQLITE_DIR"
 
+	# Ensure log directory exists and is writable
+	LOG_DIR="/app/var/log"
+	if [ ! -d "$LOG_DIR" ]; then
+		echo "Creating log directory..."
+		mkdir -p "$LOG_DIR"
+	fi
+	chown -R www-data:www-data "$LOG_DIR"
+	chmod -R 0755 "$LOG_DIR"
+	echo "Log directory ready at: $LOG_DIR"
+
 	# Install frontend dependencies if frontend directory exists
 	if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
 		echo "Installing frontend dependencies..."
