@@ -128,6 +128,9 @@ That's it! Thank you!
 
 ## Screenshots
 
+<img width="1920" height="1200" alt="2025-12-12_09-13-17" src="https://github.com/user-attachments/assets/69aace3e-57b1-4023-9750-01ba097faaeb" />
+<img width="1920" height="1200" alt="2025-12-12_09-14-47" src="https://github.com/user-attachments/assets/aa57be83-7d78-4733-a366-15aa75406f45" />
+
 ## License
 
 The 'Query play studio' is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
