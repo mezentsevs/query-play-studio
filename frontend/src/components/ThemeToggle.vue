@@ -3,8 +3,8 @@
         type="button"
         class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
         @click="toggleTheme">
-        <ThemeDarkIcon v-if="isDark" class="w-5 h-5" />
-        <ThemeLightIcon v-else class="w-5 h-5" />
+        <ThemeLightIcon v-if="isDark" class="w-5 h-5" />
+        <ThemeDarkIcon v-else class="w-5 h-5" />
     </button>
 </template>
 
