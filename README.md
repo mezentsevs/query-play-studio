@@ -18,9 +18,7 @@ Based on tech stack:
 - [Axios](https://axios-http.com),
 - [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS),
 - [TailwindCss](https://tailwindcss.com),
-- [Docker](https://www.docker.com),
-- [Swagger](https://swagger.io),
-- [Postman](https://www.postman.com).
+- [Docker](https://www.docker.com).
 
 ## Getting Started
 
