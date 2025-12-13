@@ -9,8 +9,6 @@ class SandboxConnectionFactory
 {
     public function createConnection(SandboxConnectionParams $params): \PDO
     {
-        $startTime = microtime(true);
-
         try {
             $connection = new \PDO(
                 $params->getConnectionString(),
@@ -21,8 +19,6 @@ class SandboxConnectionFactory
 
             // Set up session-specific settings for isolation
             $this->setupConnection($connection, $params);
-
-            $connectionTime = (int) ((microtime(true) - $startTime) * 1000);
 
             return $connection;
         } catch (\PDOException $e) {
@@ -43,6 +39,7 @@ class SandboxConnectionFactory
     {
         // Set session variables for the user
         $prefix = 'user_'.$params->userId.'_';
+
         $connection->exec("SET @user_prefix = '$prefix'");
 
         // Enable strict mode for better SQL compliance

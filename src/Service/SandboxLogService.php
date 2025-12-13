@@ -27,6 +27,7 @@ class SandboxLogService
         ?string $operationType = null,
     ): SandboxLog {
         $log = new SandboxLog();
+
         $log->setUser($user);
         $log->setDatabaseType($databaseType->value);
         $log->setQuery($query);
@@ -66,6 +67,7 @@ class SandboxLogService
             $limited = $result;
         } else {
             $limited = array_slice($result, 0, $maxRows);
+
             $limited[] = ['_truncated' => true, 'remaining_rows' => count($result) - $maxRows];
         }
 

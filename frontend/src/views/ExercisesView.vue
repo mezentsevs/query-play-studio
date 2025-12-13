@@ -5,6 +5,7 @@
         <main class="flex-grow container-custom py-8">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Exercises</h1>
+
                 <p class="text-gray-600 dark:text-gray-400">
                     Practice SQL with structured exercises. Track your progress and improve your
                     skills.
@@ -92,6 +93,7 @@
                                     filteredExercises.length !== 1 ? 's' : ''
                                 }}
                             </h2>
+
                             <p class="text-gray-600 dark:text-gray-400">
                                 Showing {{ filteredExercises.length }} of
                                 {{ exercises.length }} exercises
@@ -117,9 +119,11 @@
                     <div v-else-if="filteredExercises.length === 0" class="text-center py-12">
                         <ExerciseIcon
                             class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
+
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                             No exercises found
                         </h3>
+
                         <p class="text-gray-600 dark:text-gray-400">Try adjusting your filters</p>
                     </div>
 
@@ -211,12 +215,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import api from '@/services/api';
-import AppHeader from '@/components/layout/AppHeader.vue';
 import AppFooter from '@/components/layout/AppFooter.vue';
+import AppHeader from '@/components/layout/AppHeader.vue';
+import ExerciseIcon from '@icons/ExerciseIcon.vue';
+import LoadingSpinnerIcon from '@icons/LoadingSpinnerIcon.vue';
 import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
 import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
-import LoadingSpinnerIcon from '@icons/LoadingSpinnerIcon.vue';
-import ExerciseIcon from '@icons/ExerciseIcon.vue';
 import type { Exercise, ExerciseProgress } from '@/types';
 
 interface ExerciseWithProgress {
@@ -251,12 +255,14 @@ const filteredExercises = computed(() => {
             if (selectedStatus.value === 'not_started' && item.progress) {
                 return false;
             }
+
             if (
                 selectedStatus.value === 'in_progress' &&
                 (!item.progress || item.progress.status !== 'in_progress')
             ) {
                 return false;
             }
+
             if (
                 selectedStatus.value === 'completed' &&
                 (!item.progress || item.progress.status !== 'completed')
@@ -283,6 +289,7 @@ const inProgressCount = computed(() => {
 
 const progressPercentage = computed(() => {
     const total = filteredExercises.value.length;
+
     return total > 0 ? Math.round((completedCount.value / total) * 100) : 0;
 });
 
@@ -354,6 +361,7 @@ const loadExercises = async () => {
         }
     } catch (err: any) {
         console.error('Failed to load exercises:', err);
+
         error.value = err.response?.data?.message || 'Failed to load exercises';
     } finally {
         loading.value = false;
@@ -367,9 +375,11 @@ const resetProgress = async () => {
 
     try {
         await api.post('/exercises/progress/reset', { confirm: true });
+
         await loadExercises();
     } catch (err: any) {
         console.error('Failed to reset progress:', err);
+
         alert(err.response?.data?.message || 'Failed to reset progress');
     }
 };
@@ -384,9 +394,11 @@ const resetExerciseProgress = async (exerciseId: number) => {
             confirm: true,
             exercise_id: exerciseId,
         });
+
         await loadExercises();
     } catch (err: any) {
         console.error('Failed to reset exercise progress:', err);
+
         alert(err.response?.data?.message || 'Failed to reset exercise progress');
     }
 };

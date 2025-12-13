@@ -158,6 +158,7 @@ class Exercise
     {
         if (!$this->userProgresses->contains($userProgress)) {
             $this->userProgresses[] = $userProgress;
+
             $userProgress->setExercise($this);
         }
 

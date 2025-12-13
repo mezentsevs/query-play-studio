@@ -11,6 +11,7 @@ class AuthService {
 
         if (response.status === 'success') {
             api.setAuthToken(response.data.token);
+
             localStorage.setItem('user', JSON.stringify(response.data.user));
         }
 
@@ -35,6 +36,7 @@ class AuthService {
 
         if (response.status === 'success') {
             api.setAuthToken(response.data.token);
+
             localStorage.setItem('user', JSON.stringify(response.data.user));
         }
 
@@ -48,24 +50,29 @@ class AuthService {
 
     public async logout(): Promise<void> {
         api.removeAuthToken();
+
         localStorage.removeItem('user');
     }
 
     public async getCurrentUser(): Promise<User | null> {
         try {
             const response = await api.get<{ user: User }>('/auth/me');
+
             if (response.status === 'success') {
                 localStorage.setItem('user', JSON.stringify(response.data.user));
+
                 return response.data.user;
             }
         } catch (error) {
             console.error('Failed to get current user:', error);
         }
+
         return null;
     }
 
     public getStoredUser(): User | null {
         const userStr = localStorage.getItem('user');
+
         if (userStr) {
             try {
                 return JSON.parse(userStr);
@@ -73,6 +80,7 @@ class AuthService {
                 console.error('Failed to parse stored user:', error);
             }
         }
+
         return null;
     }
 

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import type { ApiResponse, ApiError } from '@/types';
+import type { ApiResponse } from '@/types';
 
 class ApiService {
     private client: AxiosInstance;
@@ -22,9 +22,11 @@ class ApiService {
         this.client.interceptors.request.use(
             config => {
                 const token = localStorage.getItem('auth_token');
+
                 if (token && config.headers) {
                     config.headers.Authorization = `Bearer ${token}`;
                 }
+
                 return config;
             },
             error => Promise.reject(error),
@@ -36,8 +38,10 @@ class ApiService {
                 if (error.response?.status === 401) {
                     localStorage.removeItem('auth_token');
                     localStorage.removeItem('user');
+
                     window.location.href = '/login';
                 }
+
                 return Promise.reject(error);
             },
         );
@@ -48,6 +52,7 @@ class ApiService {
         config?: AxiosRequestConfig,
     ): Promise<ApiResponse<T>> {
         const response = await this.client.get<ApiResponse<T>>(endpoint, config);
+
         return response.data;
     }
 
@@ -57,6 +62,7 @@ class ApiService {
         config?: AxiosRequestConfig,
     ): Promise<ApiResponse<T>> {
         const response = await this.client.post<ApiResponse<T>>(endpoint, data, config);
+
         return response.data;
     }
 
@@ -66,6 +72,7 @@ class ApiService {
         config?: AxiosRequestConfig,
     ): Promise<ApiResponse<T>> {
         const response = await this.client.put<ApiResponse<T>>(endpoint, data, config);
+
         return response.data;
     }
 
@@ -75,6 +82,7 @@ class ApiService {
         config?: AxiosRequestConfig,
     ): Promise<ApiResponse<T>> {
         const response = await this.client.patch<ApiResponse<T>>(endpoint, data, config);
+
         return response.data;
     }
 
@@ -83,6 +91,7 @@ class ApiService {
         config?: AxiosRequestConfig,
     ): Promise<ApiResponse<T>> {
         const response = await this.client.delete<ApiResponse<T>>(endpoint, config);
+
         return response.data;
     }
 

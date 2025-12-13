@@ -129,17 +129,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { DatabaseType } from '@/types/enums';
 import { marked } from 'marked';
-import DOMPurify from 'dompurify';
+import { ref, computed, watch, onMounted } from 'vue';
+import { useNotificationStore } from '@/stores/notifications';
+import AiIcon from '@icons/AiIcon.vue';
 import aiService from '@/services/ai';
 import BaseModal from './uikit/modals/BaseModal.vue';
+import DOMPurify from 'dompurify';
+import LoadingSpinnerIcon from '@icons/LoadingSpinnerIcon.vue';
 import PrimaryButton from './uikit/buttons/PrimaryButton.vue';
 import SecondaryButton from './uikit/buttons/SecondaryButton.vue';
-import LoadingSpinnerIcon from '@icons/LoadingSpinnerIcon.vue';
-import AiIcon from '@icons/AiIcon.vue';
-import { DatabaseType } from '@/types/enums';
-import { useNotificationStore } from '@/stores/notifications';
 
 const notificationStore = useNotificationStore();
 
@@ -233,6 +233,7 @@ watch(
 
 const checkAiStatus = async () => {
     const status = await aiService.getAiAssistantStatus();
+
     aiStatus.value = status;
 };
 
@@ -260,12 +261,14 @@ const handleAskQuestion = async () => {
 
         if (aiResponse.status === 'success') {
             response.value = aiResponse.data;
+
             emit('response', aiResponse.data);
         } else {
             error.value = aiResponse.message || 'Unknown error';
         }
     } catch (err: any) {
         console.error('Failed to get AI response:', err);
+
         error.value = err.response?.data?.message || 'Failed to get AI response';
     } finally {
         isLoading.value = false;
@@ -273,8 +276,13 @@ const handleAskQuestion = async () => {
 };
 
 const handleExplainError = async () => {
-    if (!props.sqlQuery || !props.errorMessage || !props.databaseType) return;
-    if (!aiStatus.value.enabled) return;
+    if (!props.sqlQuery || !props.errorMessage || !props.databaseType) {
+        return;
+    }
+
+    if (!aiStatus.value.enabled) {
+        return;
+    }
 
     isLoading.value = true;
     error.value = '';
@@ -294,12 +302,14 @@ const handleExplainError = async () => {
 
         if (aiResponse.status === 'success') {
             response.value = aiResponse.data;
+
             emit('response', aiResponse.data);
         } else {
             error.value = aiResponse.message || 'Unknown error';
         }
     } catch (err: any) {
         console.error('Failed to explain error:', err);
+
         error.value = err.response?.data?.message || 'Failed to explain error';
     } finally {
         isLoading.value = false;
@@ -307,8 +317,13 @@ const handleExplainError = async () => {
 };
 
 const handleOptimizeQuery = async () => {
-    if (!props.sqlQuery || !props.databaseType) return;
-    if (!aiStatus.value.enabled) return;
+    if (!props.sqlQuery || !props.databaseType) {
+        return;
+    }
+
+    if (!aiStatus.value.enabled) {
+        return;
+    }
 
     isLoading.value = true;
     error.value = '';
@@ -328,12 +343,14 @@ const handleOptimizeQuery = async () => {
 
         if (aiResponse.status === 'success') {
             response.value = aiResponse.data;
+
             emit('response', aiResponse.data);
         } else {
             error.value = aiResponse.message || 'Unknown error';
         }
     } catch (err: any) {
         console.error('Failed to optimize query:', err);
+
         error.value = err.response?.data?.message || 'Failed to optimize query';
     } finally {
         isLoading.value = false;
@@ -345,9 +362,11 @@ const handleCopyResponse = async () => {
 
     try {
         await navigator.clipboard.writeText(response.value.response);
+
         notificationStore.addNotification('success', 'AI response copied to clipboard', 'Copied');
     } catch (err) {
         console.error('Failed to copy response:', err);
+
         notificationStore.addNotification(
             'error',
             'Failed to copy response to clipboard',
@@ -361,6 +380,7 @@ watch(
     isOpen => {
         if (isOpen) {
             checkAiStatus();
+
             if (props.initialQuestion) {
                 question.value = props.initialQuestion;
             }

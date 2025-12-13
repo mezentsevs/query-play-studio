@@ -7,6 +7,7 @@
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                     Database Sandbox
                 </h1>
+
                 <p class="text-gray-600 dark:text-gray-400">
                     Execute SQL queries in isolated environments. Your tables are prefixed with
                     <code class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
@@ -277,7 +278,6 @@
 
         <AppFooter />
 
-        <!-- AI Assistant Modal -->
         <AiAssistantModal
             :is-open="showAiModal"
             :context-type="aiContextType"
@@ -291,24 +291,23 @@
 </template>
 
 <script setup lang="ts">
+import { DatabaseType } from '@/types/enums';
 import { ref, computed, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import AiAssistantModal from '@/components/AiAssistantModal.vue';
+import AiIcon from '@icons/AiIcon.vue';
 import api from '@/services/api';
-import aiService from '@/services/ai';
-import AppHeader from '@/components/layout/AppHeader.vue';
 import AppFooter from '@/components/layout/AppFooter.vue';
+import AppHeader from '@/components/layout/AppHeader.vue';
 import CodeEditor from '@/components/uikit/CodeEditor.vue';
 import DataTable from '@/components/uikit/DataTable.vue';
-import AiAssistantModal from '@/components/AiAssistantModal.vue';
-import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
-import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
+import HistoryIcon from '@icons/HistoryIcon.vue';
 import LoadingSpinnerIcon from '@icons/LoadingSpinnerIcon.vue';
 import PlayIcon from '@icons/PlayIcon.vue';
+import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
+import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
 import StructureIcon from '@icons/StructureIcon.vue';
-import HistoryIcon from '@icons/HistoryIcon.vue';
-import AiIcon from '@icons/AiIcon.vue';
 import type { SandboxQueryResult, SandboxStructure } from '@/types';
-import { DatabaseType } from '@/types/enums';
 
 const authStore = useAuthStore();
 
@@ -358,6 +357,7 @@ const executeQuery = async () => {
         }
     } catch (error: any) {
         console.error('Query execution failed:', error);
+
         lastResult.value = {
             success: false,
             error: error.response?.data?.message || 'Failed to execute query',
@@ -381,6 +381,7 @@ const loadStructure = async () => {
         }
     } catch (error: any) {
         console.error('Failed to load structure:', error);
+
         structureError.value = error.response?.data?.message || 'Failed to load database structure';
     } finally {
         structureLoading.value = false;
@@ -404,6 +405,7 @@ const loadHistory = async () => {
         }
     } catch (error: any) {
         console.error('Failed to load history:', error);
+
         historyError.value = error.response?.data?.message || 'Failed to load query history';
     } finally {
         historyLoading.value = false;
@@ -452,13 +454,22 @@ const formatTimeAgo = (timestamp: string) => {
     const diffMs = now.getTime() - date.getTime();
     const diffMins = Math.floor(diffMs / 60000);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffMins < 1) {
+        return 'Just now';
+    }
+
+    if (diffMins < 60) {
+        return `${diffMins}m ago`;
+    }
 
     const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `${diffHours}h ago`;
+
+    if (diffHours < 24) {
+        return `${diffHours}h ago`;
+    }
 
     const diffDays = Math.floor(diffHours / 24);
+
     return `${diffDays}d ago`;
 };
 

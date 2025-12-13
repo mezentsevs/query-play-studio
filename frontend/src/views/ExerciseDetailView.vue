@@ -96,6 +96,7 @@
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                                 Instructions
                             </h2>
+
                             <div class="prose dark:prose-invert max-w-none">
                                 <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">
                                     {{ exercise.instructions }}
@@ -222,6 +223,7 @@
                                 <h3 class="font-medium text-gray-900 dark:text-white mb-2">
                                     Your Result
                                 </h3>
+
                                 <div
                                     class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-64 overflow-y-auto">
                                     <DataTable
@@ -249,6 +251,7 @@
                                 <h3 class="font-medium text-gray-900 dark:text-white mb-2">
                                     Expected Result
                                 </h3>
+
                                 <div
                                     class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-64 overflow-y-auto">
                                     <DataTable
@@ -283,9 +286,11 @@
                                     class="text-lg font-medium text-success-800 dark:text-success-300">
                                     Congratulations!
                                 </h3>
+
                                 <p class="text-success-700 dark:text-success-400">
                                     Your solution is correct. You've completed this exercise!
                                 </p>
+
                                 <div class="mt-2 text-sm text-success-600 dark:text-success-500">
                                     <span v-if="progress">
                                         Score: {{ progress.score || 0 }}% • Attempts:
@@ -309,7 +314,6 @@
 
         <AppFooter />
 
-        <!-- AI Assistant Modal -->
         <AiAssistantModal
             :is-open="showAiModal"
             :context-type="aiContextType"
@@ -324,25 +328,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useNotificationStore } from '@/stores/notifications';
+import { useRoute } from 'vue-router';
+import AiAssistantModal from '@/components/AiAssistantModal.vue';
+import AiIcon from '@icons/AiIcon.vue';
 import api from '@/services/api';
-import AppHeader from '@/components/layout/AppHeader.vue';
 import AppFooter from '@/components/layout/AppFooter.vue';
+import AppHeader from '@/components/layout/AppHeader.vue';
 import CodeEditor from '@/components/uikit/CodeEditor.vue';
 import DataTable from '@/components/uikit/DataTable.vue';
-import AiAssistantModal from '@/components/AiAssistantModal.vue';
+import LoadingSpinnerIcon from '@icons/LoadingSpinnerIcon.vue';
 import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
 import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
-import LoadingSpinnerIcon from '@icons/LoadingSpinnerIcon.vue';
-import AiIcon from '@icons/AiIcon.vue';
-import type { Exercise, ExerciseProgress } from '@/types';
-import { useNotificationStore } from '@/stores/notifications';
+import type { ExerciseProgress } from '@/types';
 
 const notificationStore = useNotificationStore();
-
 const route = useRoute();
-const router = useRouter();
 
 const exercise = ref<any>({});
 const progress = ref<ExerciseProgress | null>(null);
@@ -396,6 +398,7 @@ const getDatabaseBadgeClass = (dbType: string) => {
 
 const resultColumns = (firstRow: any) => {
     if (!firstRow) return [];
+
     return Object.keys(firstRow).map(key => ({
         key,
         label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
@@ -404,8 +407,10 @@ const resultColumns = (firstRow: any) => {
 
 const loadExercise = async () => {
     const exerciseId = parseInt(route.params.id as string);
+
     if (!exerciseId) {
         error.value = 'Invalid exercise ID';
+
         return;
     }
 
@@ -415,22 +420,27 @@ const loadExercise = async () => {
     try {
         // Load exercise details
         const exerciseResponse = await api.get(`/exercises/${exerciseId}`);
+
         if (exerciseResponse.status === 'success') {
             exercise.value = exerciseResponse.data;
         } else {
             error.value = 'Exercise not found';
+
             return;
         }
 
         // Load user progress
         const progressResponse = await api.get('/exercises/progress');
+
         if (progressResponse.status === 'success') {
             const exercisesWithProgress = progressResponse.data;
             const currentProgress = exercisesWithProgress.find(
                 (item: any) => item.exercise.id === exerciseId,
             );
+
             if (currentProgress) {
                 progress.value = currentProgress.progress;
+
                 if (currentProgress.progress?.user_query) {
                     userQuery.value = currentProgress.progress.user_query;
                 }
@@ -440,17 +450,21 @@ const loadExercise = async () => {
         // If no progress exists, start the exercise
         if (!progress.value) {
             await api.post(`/exercises/${exerciseId}/start`);
+
             const updatedProgressResponse = await api.get('/exercises/progress');
+
             if (updatedProgressResponse.status === 'success') {
                 const exercisesWithProgress = updatedProgressResponse.data;
                 const currentProgress = exercisesWithProgress.find(
                     (item: any) => item.exercise.id === exerciseId,
                 );
+
                 progress.value = currentProgress?.progress || null;
             }
         }
     } catch (err: any) {
         console.error('Failed to load exercise:', err);
+
         error.value = err.response?.data?.message || 'Failed to load exercise';
     } finally {
         loading.value = false;
@@ -474,16 +488,19 @@ const submitSolution = async () => {
 
             // Reload progress to get updated status
             const progressResponse = await api.get('/exercises/progress');
+
             if (progressResponse.status === 'success') {
                 const exercisesWithProgress = progressResponse.data;
                 const currentProgress = exercisesWithProgress.find(
                     (item: any) => item.exercise.id === exercise.value.id,
                 );
+
                 progress.value = currentProgress?.progress || null;
             }
         }
     } catch (err: any) {
         console.error('Failed to submit solution:', err);
+
         lastResult.value = {
             success: false,
             query_result: {
@@ -507,10 +524,12 @@ const resetProgress = async () => {
         });
 
         await loadExercise();
+
         userQuery.value = '';
         lastResult.value = null;
     } catch (err: any) {
         console.error('Failed to reset progress:', err);
+
         alert(err.response?.data?.message || 'Failed to reset progress');
     }
 };
@@ -522,6 +541,7 @@ const clearQuery = () => {
 const copySchema = async () => {
     try {
         await navigator.clipboard.writeText(exercise.value.initial_schema);
+
         notificationStore.addNotification(
             'success',
             'Database schema copied to clipboard',
@@ -529,6 +549,7 @@ const copySchema = async () => {
         );
     } catch (err) {
         console.error('Failed to copy schema:', err);
+
         notificationStore.addNotification(
             'error',
             'Failed to copy schema to clipboard',
@@ -551,6 +572,7 @@ const showAiHelpWithError = () => {
         aiContextType.value = 'exercise_help';
         aiInitialQuestion.value = `My query doesn't produce the expected result. Can you help me understand what's wrong?`;
     }
+
     showAiModal.value = true;
 };
 

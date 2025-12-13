@@ -14,6 +14,7 @@ class AppFixtures extends Fixture
 
         foreach ($exercises as $exerciseData) {
             $exercise = new Exercise();
+
             $exercise->setTitle($exerciseData['title']);
             $exercise->setDescription($exerciseData['description']);
             $exercise->setInstructions($exerciseData['instructions']);

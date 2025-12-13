@@ -142,6 +142,7 @@ class SandboxLogController extends AbstractController
 
             // By database type
             $dbType = $log->getDatabaseType();
+
             if (!isset($statistics['by_database_type'][$dbType])) {
                 $statistics['by_database_type'][$dbType] = [
                     'count' => 0,

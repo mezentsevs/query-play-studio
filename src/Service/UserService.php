@@ -33,6 +33,7 @@ class UserService
     public function updateUser(User $user): void
     {
         $user->setUpdatedAt(new \DateTimeImmutable());
+
         $this->entityManager->flush();
     }
 

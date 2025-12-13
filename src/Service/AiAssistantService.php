@@ -177,6 +177,7 @@ class AiAssistantService
                 $prompt .= "Error: $errorMessage\n";
                 $prompt .= "Query: $sqlQuery\n";
                 $prompt .= "Question: $question";
+
                 break;
 
             case 'sql_optimization':
@@ -185,6 +186,7 @@ class AiAssistantService
                 $prompt .= 'Explain why your suggestions improve performance. ';
                 $prompt .= "Query: $sqlQuery\n";
                 $prompt .= "Question: $question";
+
                 break;
 
             case 'exercise_help':
@@ -192,16 +194,20 @@ class AiAssistantService
                 $prompt .= 'Provide helpful guidance without giving away the complete solution. ';
                 $prompt .= 'Encourage learning and understanding. ';
                 $prompt .= "Question: $question";
+
                 break;
 
             case 'general':
             default:
                 $prompt .= "Answer the user's question about databases and SQL. ";
                 $prompt .= 'Be clear, concise, and educational. ';
+
                 if ($databaseType) {
                     $prompt .= "Focus on {$databaseType->value} specifically. ";
                 }
+
                 $prompt .= "Question: $question";
+
                 break;
         }
 

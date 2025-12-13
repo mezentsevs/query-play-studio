@@ -6,9 +6,11 @@
                 <div class="flex justify-center">
                     <DatabaseIcon class="w-12 h-12 text-primary-600 dark:text-primary-400" />
                 </div>
+
                 <h2 class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
                     Create a new account
                 </h2>
+
                 <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     Or
                     <router-link
@@ -129,13 +131,13 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import TextInput from '@components/uikit/inputs/TextInput.vue';
+import { useRouter } from 'vue-router';
+import DatabaseIcon from '@icons/DatabaseIcon.vue';
 import PasswordInput from '@components/uikit/inputs/PasswordInput.vue';
 import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
 import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
-import DatabaseIcon from '@icons/DatabaseIcon.vue';
+import TextInput from '@components/uikit/inputs/TextInput.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -145,7 +147,6 @@ const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 const acceptedTerms = ref(false);
-
 const errors = ref({
     email: '',
     username: '',
@@ -177,6 +178,7 @@ const validateField = (field: string) => {
             } else {
                 errors.value.email = '';
             }
+
             break;
         case 'username':
             if (!username.value.trim()) {
@@ -189,6 +191,7 @@ const validateField = (field: string) => {
             } else {
                 errors.value.username = '';
             }
+
             break;
         case 'password':
             if (!password.value.trim()) {
@@ -202,6 +205,7 @@ const validateField = (field: string) => {
                     validateField('confirmPassword');
                 }
             }
+
             break;
         case 'confirmPassword':
             if (!confirmPassword.value.trim()) {
@@ -211,6 +215,7 @@ const validateField = (field: string) => {
             } else {
                 errors.value.confirmPassword = '';
             }
+
             break;
     }
 };
@@ -229,6 +234,7 @@ const handleRegister = async () => {
 
     if (result.success) {
         const redirect = router.currentRoute.value.query.redirect as string;
+
         router.push(redirect || '/sandbox');
     }
 };

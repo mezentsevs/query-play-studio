@@ -105,6 +105,7 @@ onMounted(() => {
 
 const handleInput = (event: Event) => {
     const target = event.target as HTMLInputElement;
+
     emit('update:modelValue', target.value);
 };
 

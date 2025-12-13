@@ -152,6 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->exerciseProgresses->contains($exerciseProgress)) {
             $this->exerciseProgresses[] = $exerciseProgress;
+
             $exerciseProgress->setUser($this);
         }
 
@@ -178,6 +179,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->sandboxLogs->contains($sandboxLog)) {
             $this->sandboxLogs[] = $sandboxLog;
+
             $sandboxLog->setUser($this);
         }
 
@@ -204,6 +206,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->aiConversations->contains($aiConversation)) {
             $this->aiConversations[] = $aiConversation;
+
             $aiConversation->setUser($this);
         }
 

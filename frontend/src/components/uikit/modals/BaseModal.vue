@@ -71,11 +71,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import { Dialog, DialogTitle, TransitionRoot, TransitionChild } from '@headlessui/vue';
+import { ref, computed } from 'vue';
+import ClearIcon from '@icons/ClearIcon.vue';
 import PrimaryButton from '../buttons/PrimaryButton.vue';
 import SecondaryButton from '../buttons/SecondaryButton.vue';
-import ClearIcon from '@icons/ClearIcon.vue';
 
 interface Props {
     isOpen: boolean;

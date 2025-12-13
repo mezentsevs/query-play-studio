@@ -51,8 +51,8 @@
 
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
-import SecondaryButton from './buttons/SecondaryButton.vue';
 import { useNotificationStore } from '@/stores/notifications';
+import SecondaryButton from './buttons/SecondaryButton.vue';
 
 const notificationStore = useNotificationStore();
 
@@ -92,10 +92,12 @@ const emit = defineEmits<{
 
 const textareaRef = ref<HTMLTextAreaElement>();
 const copyButtonText = ref('Copy');
+
 let copyTimeout: number | undefined;
 
 const handleInput = (event: Event) => {
     const target = event.target as HTMLTextAreaElement;
+
     emit('update:modelValue', target.value);
 };
 
@@ -107,6 +109,7 @@ const handleClear = () => {
 const handleCopy = async () => {
     try {
         await navigator.clipboard.writeText(props.modelValue || '');
+
         copyButtonText.value = 'Copied!';
         notificationStore.addNotification('success', 'Code copied to clipboard', 'Copied');
 
@@ -119,6 +122,7 @@ const handleCopy = async () => {
         }, 2000);
     } catch (err) {
         console.error('Failed to copy:', err);
+
         copyButtonText.value = 'Failed';
         notificationStore.addNotification(
             'error',

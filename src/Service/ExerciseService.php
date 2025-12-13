@@ -83,6 +83,7 @@ class ExerciseService
 
         if (!$progress) {
             $progress = new UserExerciseProgress();
+
             $progress->setUser($user);
             $progress->setExercise($exercise);
         }

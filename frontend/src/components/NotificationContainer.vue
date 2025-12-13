@@ -88,13 +88,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { NotificationType } from '@/stores/notifications';
 import { useNotificationStore } from '@/stores/notifications';
-import { Notification, NotificationType } from '@/stores/notifications';
-import ClearIcon from '@icons/ClearIcon.vue';
 import CheckCircleIcon from '@icons/CheckCircleIcon.vue';
-import XCircleIcon from '@icons/XCircleIcon.vue';
+import ClearIcon from '@icons/ClearIcon.vue';
 import ExclamationTriangleIcon from '@icons/ExclamationTriangleIcon.vue';
 import InformationCircleIcon from '@icons/InformationCircleIcon.vue';
+import XCircleIcon from '@icons/XCircleIcon.vue';
 
 const notificationStore = useNotificationStore();
 
@@ -121,10 +121,12 @@ const getIcon = (type: NotificationType) => {
 
 const removeNotification = (id: number) => {
     const timeoutId = timeouts.get(id);
+
     if (timeoutId) {
         clearTimeout(timeoutId);
         timeouts.delete(id);
     }
+
     startTimes.delete(id);
     remainingTimes.delete(id);
     notificationStore.removeNotification(id);
@@ -132,16 +134,22 @@ const removeNotification = (id: number) => {
 
 const pauseTimeout = (id: number) => {
     const notification = notifications.value.find(n => n.id === id);
-    if (!notification || !notification.duration) return;
+
+    if (!notification || !notification.duration) {
+        return;
+    }
 
     const timeoutId = timeouts.get(id);
+
     if (timeoutId) {
         clearTimeout(timeoutId);
         timeouts.delete(id);
 
         const startTime = startTimes.get(id);
+
         if (startTime) {
             const elapsed = Date.now() - startTime;
+
             remainingTimes.set(
                 id,
                 ((notification.duration - elapsed) / notification.duration) * 100,
@@ -152,16 +160,21 @@ const pauseTimeout = (id: number) => {
 
 const resumeTimeout = (id: number) => {
     const notification = notifications.value.find(n => n.id === id);
-    if (!notification || !notification.duration) return;
+
+    if (!notification || !notification.duration) {
+        return;
+    }
 
     const remainingPercentage = remainingTimes.get(id) || 100;
     const remainingMs = (remainingPercentage / 100) * notification.duration;
 
     if (remainingMs > 0) {
         startTimes.set(id, Date.now());
+
         const timeoutId = window.setTimeout(() => {
             removeNotification(id);
         }, remainingMs);
+
         timeouts.set(id, timeoutId);
     } else {
         removeNotification(id);
@@ -170,10 +183,16 @@ const resumeTimeout = (id: number) => {
 
 const getProgressWidth = (id: number): number => {
     const notification = notifications.value.find(n => n.id === id);
-    if (!notification || !notification.duration) return 0;
+
+    if (!notification || !notification.duration) {
+        return 0;
+    }
 
     const startTime = startTimes.get(id);
-    if (!startTime) return 100;
+
+    if (!startTime) {
+        return 100;
+    }
 
     const elapsed = Date.now() - startTime;
     const progress = Math.max(0, 100 - (elapsed / notification.duration) * 100);
@@ -185,9 +204,11 @@ const getProgressWidth = (id: number): number => {
 notifications.value.forEach(notification => {
     if (notification.duration && !startTimes.has(notification.id)) {
         startTimes.set(notification.id, Date.now());
+
         const timeoutId = window.setTimeout(() => {
             removeNotification(notification.id);
         }, notification.duration);
+
         timeouts.set(notification.id, timeoutId);
     }
 });

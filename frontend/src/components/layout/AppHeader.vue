@@ -69,12 +69,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import ThemeToggle from '@/components/ThemeToggle.vue';
+import { useRouter } from 'vue-router';
 import DatabaseIcon from '@icons/DatabaseIcon.vue';
 import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
 import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
+import ThemeToggle from '@/components/ThemeToggle.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();

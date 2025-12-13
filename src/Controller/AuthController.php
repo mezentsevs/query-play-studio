@@ -37,6 +37,7 @@ class AuthController extends AbstractController
         }
 
         $user = new User();
+
         $user->setEmail($data['email']);
         $user->setUsername($data['username']);
 

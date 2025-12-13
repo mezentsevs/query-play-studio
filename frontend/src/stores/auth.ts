@@ -22,13 +22,16 @@ export const useAuthStore = defineStore('auth', () => {
 
             if (response.status === 'success') {
                 user.value = response.user;
+
                 return { success: true };
             } else {
                 error.value = response.message;
+
                 return { success: false, error: response.message };
             }
         } catch (err: any) {
             error.value = err.response?.data?.message || err.message || 'Login failed';
+
             return { success: false, error: error.value };
         } finally {
             loading.value = false;
@@ -44,13 +47,16 @@ export const useAuthStore = defineStore('auth', () => {
 
             if (response.status === 'success') {
                 user.value = response.user;
+
                 return { success: true };
             } else {
                 error.value = response.message;
+
                 return { success: false, error: response.message };
             }
         } catch (err: any) {
             error.value = err.response?.data?.message || err.message || 'Registration failed';
+
             return { success: false, error: error.value };
         } finally {
             loading.value = false;
@@ -59,8 +65,10 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function logout() {
         loading.value = true;
+
         try {
             await authService.logout();
+
             user.value = null;
             error.value = null;
         } finally {
@@ -70,8 +78,10 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function fetchUser() {
         loading.value = true;
+
         try {
             const fetchedUser = await authService.getCurrentUser();
+
             if (fetchedUser) {
                 user.value = fetchedUser;
             }

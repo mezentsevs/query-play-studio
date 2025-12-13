@@ -88,6 +88,7 @@ class SandboxManager
     private function getMysqlStructure(SandboxConnectionParams $params): array
     {
         $tablesQuery = "SHOW TABLES LIKE 'user_{$params->userId}_%'";
+
         $result = $this->queryExecutor->executeQuery($params, $tablesQuery);
 
         if (!$result->success) {
@@ -98,6 +99,7 @@ class SandboxManager
 
         foreach ($result->data as $row) {
             $tableName = reset($row);
+
             $structure[$tableName] = $this->getMysqlTableStructure($params, $tableName);
         }
 
@@ -107,6 +109,7 @@ class SandboxManager
     private function getMysqlTableStructure(SandboxConnectionParams $params, string $tableName): array
     {
         $describeQuery = "DESCRIBE `{$tableName}`";
+
         $result = $this->queryExecutor->executeQuery($params, $describeQuery);
 
         return $result->success ? $result->data : [];
@@ -131,6 +134,7 @@ class SandboxManager
 
         foreach ($result->data as $row) {
             $tableName = $row['table_name'];
+
             $structure[$tableName] = $this->getPostgresTableStructure($params, $tableName);
         }
 
@@ -157,12 +161,12 @@ class SandboxManager
 
     private function getSqliteStructure(SandboxConnectionParams $params): array
     {
-        // Ensure the SQLite file exists
         if (!file_exists($params->filePath)) {
             $this->createSqliteDatabase($params);
         }
 
         $tablesQuery = "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'user_{$params->userId}_%'";
+
         $result = $this->queryExecutor->executeQuery($params, $tablesQuery);
 
         if (!$result->success) {
@@ -173,6 +177,7 @@ class SandboxManager
 
         foreach ($result->data as $row) {
             $tableName = $row['name'];
+
             $structure[$tableName] = $this->getSqliteTableStructure($params, $tableName);
         }
 
@@ -182,6 +187,7 @@ class SandboxManager
     private function getSqliteTableStructure(SandboxConnectionParams $params, string $tableName): array
     {
         $pragmaQuery = "PRAGMA table_info('{$tableName}')";
+
         $result = $this->queryExecutor->executeQuery($params, $pragmaQuery);
 
         return $result->success ? $result->data : [];
@@ -189,7 +195,6 @@ class SandboxManager
 
     private function createSqliteDatabase(SandboxConnectionParams $params): void
     {
-        // Create an empty SQLite file
         touch($params->filePath);
         chmod($params->filePath, 0o666);
     }

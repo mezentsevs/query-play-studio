@@ -51,7 +51,9 @@
                         <div class="text-primary-600 dark:text-primary-400 mb-4">
                             <DatabaseIcon class="w-12 h-12 mx-auto" />
                         </div>
+
                         <h3 class="text-xl font-semibold mb-3">Multi-Database Support</h3>
+
                         <p class="text-gray-600 dark:text-gray-400">
                             Practice with MySQL, PostgreSQL, and SQLite. Learn the nuances of each
                             system.
@@ -62,7 +64,9 @@
                         <div class="text-success-600 dark:text-success-400 mb-4">
                             <ExerciseIcon class="w-12 h-12 mx-auto" />
                         </div>
+
                         <h3 class="text-xl font-semibold mb-3">Interactive Exercises</h3>
+
                         <p class="text-gray-600 dark:text-gray-400">
                             Complete structured exercises with instant feedback and progress
                             tracking.
@@ -73,7 +77,9 @@
                         <div class="text-warning-600 dark:text-warning-400 mb-4">
                             <AiIcon class="w-12 h-12 mx-auto" />
                         </div>
+
                         <h3 class="text-xl font-semibold mb-3">AI Assistant</h3>
+
                         <p class="text-gray-600 dark:text-gray-400">
                             Get explanations for errors, query optimization tips, and personalized
                             guidance.
@@ -89,19 +95,20 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import AppHeader from '@/components/layout/AppHeader.vue';
+import { useRouter } from 'vue-router';
+import AiIcon from '@icons/AiIcon.vue';
 import AppFooter from '@/components/layout/AppFooter.vue';
-import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
-import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
-import LoginIcon from '@icons/LoginIcon.vue';
-import RegisterIcon from '@icons/RegisterIcon.vue';
+import AppHeader from '@/components/layout/AppHeader.vue';
 import DatabaseIcon from '@icons/DatabaseIcon.vue';
 import ExerciseIcon from '@icons/ExerciseIcon.vue';
-import AiIcon from '@icons/AiIcon.vue';
+import LoginIcon from '@icons/LoginIcon.vue';
+import PrimaryButton from '@components/uikit/buttons/PrimaryButton.vue';
+import RegisterIcon from '@icons/RegisterIcon.vue';
+import SecondaryButton from '@components/uikit/buttons/SecondaryButton.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
+
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 </script>

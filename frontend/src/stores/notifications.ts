@@ -42,6 +42,7 @@ export const useNotificationStore = defineStore('notifications', () => {
 
     const removeNotification = (id: number) => {
         const index = notifications.value.findIndex(n => n.id === id);
+
         if (index !== -1) {
             notifications.value.splice(index, 1);
         }

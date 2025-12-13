@@ -1,16 +1,18 @@
-import type { AiAskRequest, AiConversation, ApiResponse } from '@/types';
 import { DatabaseType } from '@/types/enums';
+import type { AiAskRequest } from '@/types';
 
 import api from './api';
 
 class AiService {
     public async getStatus() {
         const response = await api.get('/ai/status');
+
         return response;
     }
 
     public async askQuestion(data: AiAskRequest) {
         const response = await api.post('/ai/ask', data);
+
         return response;
     }
 
@@ -20,6 +22,7 @@ class AiService {
             error_message: errorMessage,
             database_type: databaseType,
         });
+
         return response;
     }
 
@@ -29,6 +32,7 @@ class AiService {
             database_type: databaseType,
             schema: schema,
         });
+
         return response;
     }
 
@@ -37,6 +41,7 @@ class AiService {
             exercise_id: exerciseId,
             question: question,
         });
+
         return response;
     }
 
@@ -44,6 +49,7 @@ class AiService {
         const response = await api.get('/ai/conversations', {
             params: { limit },
         });
+
         return response;
     }
 
@@ -53,12 +59,14 @@ class AiService {
     }> {
         try {
             const response = await this.getStatus();
+
             return {
                 enabled: response.data.enabled,
                 provider: response.data.provider,
             };
         } catch (error) {
             console.error('Failed to get AI assistant status:', error);
+
             return {
                 enabled: false,
                 provider: 'disabled',

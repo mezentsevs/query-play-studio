@@ -1,11 +1,11 @@
 import babelParser from '@babel/eslint-parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
 import eslintPluginImport from 'eslint-plugin-import';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import eslintPluginPromise from 'eslint-plugin-promise';
 import eslintPluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 import vueEslintParser from 'vue-eslint-parser';
 
 export default [
