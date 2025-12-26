@@ -19,6 +19,7 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-/app/config/jwt/private.pem}
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-/app/config/jwt/public.pem}
       JWT_PASSPHRASE: ${JWT_PASSPHRASE:-!ChangeThisJWTPassphrase!}
+      MERCURE_EXTRA_DIRECTIVES: transport bolt /data/mercure.db
     volumes:
       - qps-caddy-data:/data
       - qps-caddy-config:/config
@@ -28,7 +29,7 @@ services:
       - target: 80
         published: ${HTTP_PORT:-80}
         protocol: tcp
-      - "3000:3000" # For Vite Dev Server
+      - "3000:3000"
     depends_on:
       - qps-db
       - qps-mysql-sandbox
@@ -93,4 +94,3 @@ volumes:
   qps-mysql-sandbox-data:
   qps-postgres-sandbox-data:
   qps-sqlite-sandbox-data:
-  
