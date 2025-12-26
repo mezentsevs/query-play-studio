@@ -4,22 +4,22 @@ services:
     container_name: qps-php
     restart: unless-stopped
     environment:
-      SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
+      DATABASE_URL: mysql://${MYSQL_USER:-user}:${MYSQL_PASSWORD:-password}@qps-db:3306/${MYSQL_DATABASE:-app_db}?serverVersion=8.4&charset=utf8mb4
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE:-!ChangeThisJWTPassphrase!}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-/app/config/jwt/public.pem}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-/app/config/jwt/private.pem}
+      MERCURE_EXTRA_DIRECTIVES: transport bolt /data/mercure.db
+      MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-http://${SERVER_NAME:-localhost}:${HTTP_PORT:-80}/.well-known/mercure}
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
-      DATABASE_URL: mysql://${MYSQL_USER:-user}:${MYSQL_PASSWORD:-password}@qps-db:3306/${MYSQL_DATABASE:-app_db}?serverVersion=8.4&charset=utf8mb4
+      MERCURE_URL: ${CADDY_MERCURE_URL:-http://qps-php/.well-known/mercure}
       MYSQL_SANDBOX_URL: mysql://${MYSQL_SANDBOX_ROOT_USER:-root}:${MYSQL_SANDBOX_ROOT_PASSWORD}@qps-mysql-sandbox:3306
       POSTGRES_SANDBOX_URL: postgresql://${POSTGRES_SANDBOX_ROOT_USER:-postgres}:${POSTGRES_SANDBOX_ROOT_PASSWORD}@qps-postgres-sandbox:5432/postgres
+      SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
       SQLITE_SANDBOX_PATH: /var/lib/sqlite
-      MERCURE_URL: ${CADDY_MERCURE_URL:-http://qps-php/.well-known/mercure}
-      MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-http://${SERVER_NAME:-localhost}:${HTTP_PORT:-80}/.well-known/mercure}
-      MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
-      SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-/app/config/jwt/private.pem}
-      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-/app/config/jwt/public.pem}
-      JWT_PASSPHRASE: ${JWT_PASSPHRASE:-!ChangeThisJWTPassphrase!}
-      MERCURE_EXTRA_DIRECTIVES: transport bolt /data/mercure.db
+      SYMFONY_VERSION: ${SYMFONY_VERSION:-}
     volumes:
       - qps-caddy-data:/data
       - qps-caddy-config:/config
