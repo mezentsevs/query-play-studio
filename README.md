@@ -1,5 +1,9 @@
 # Query play studio. In progress now! 🏗️
 
+## Note on Future Development
+
+Please be aware that this application is in active development. The project is continuously evolving with planned fixes, improvements, and additional capabilities. Thank you for your understanding and support.
+
 ## About 'Query play studio'
 
 This is a query play studio, written in and for educational and demonstrational purposes.
